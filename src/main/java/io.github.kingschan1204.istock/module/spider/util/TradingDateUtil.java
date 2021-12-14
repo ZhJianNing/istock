@@ -88,15 +88,15 @@ public class TradingDateUtil {
             String day = dtf.format(dateTime);
             if (isTradingDay(day)) {
                 if (isTradingTime(dateTime.getHour(), dateTime.getMinute())) {
-//                    log.info("现在是交易时间");
+                    log.info("现在是交易时间");
                     return true;
                 } else {
-//                    log.info("现在不是交易时间");
+                    log.info("现在不是交易时间");
                     return false;
                 }
             }
         } catch (Exception ex) {
-            log.error("{}", ex);
+            log.error("判断交易时间出错:", ex);
             ex.printStackTrace();
         }
         return false;

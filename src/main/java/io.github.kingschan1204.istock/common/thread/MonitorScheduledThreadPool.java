@@ -38,7 +38,7 @@ public class MonitorScheduledThreadPool extends ScheduledThreadPoolExecutor {
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
         super.afterExecute(r, t);
-        log.info("{}",String.format("总线程数:%s,活动线程数:%s,执行完成线程数:%s,排队线程数:%s",
+        log.info("{}",String.format("总任务数:%s,活动线程数:%s,执行完成线程数:%s,排队线程数:%s",
                 getTaskCount(),
                 getActiveCount(),
                 getCompletedTaskCount(),

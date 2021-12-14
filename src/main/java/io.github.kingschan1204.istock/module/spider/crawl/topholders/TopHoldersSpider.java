@@ -40,7 +40,7 @@ public class TopHoldersSpider implements Runnable{
         if(null!=list&&list.size()>0){
             return list.get(0).getCode();
         }
-        log.info("top holder 更新完毕！关闭作业");
+        log.info("前十大股东任务 更新完毕！关闭作业");
         ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.TOP_HOLDER).execute(ITimerJob.COMMAND.STOP);
         return null;
     }
@@ -58,7 +58,7 @@ public class TopHoldersSpider implements Runnable{
            UpdateResult updateResult= mongoTemplate.upsert(
                     new Query(Criteria.where("_id").is(code)),
                     new Update().set("holdersDate",Integer.valueOf(TradingDateUtil.getDateYYYYMMdd())),"stock_code_info");
-           log.info("代码{}top holders 更新{}行",code,updateResult.getMatchedCount());
+           log.info("代码{} 前十大股东 更新{}行",code,updateResult.getMatchedCount());
         } catch (Exception e) {
             e.printStackTrace();
             log.error("{}",e);

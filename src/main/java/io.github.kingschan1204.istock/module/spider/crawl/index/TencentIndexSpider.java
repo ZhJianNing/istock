@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/**
+/** 腾讯济安
  * http://qt.gtimg.cn/q=%s
  *
  * @author chenguoxiang

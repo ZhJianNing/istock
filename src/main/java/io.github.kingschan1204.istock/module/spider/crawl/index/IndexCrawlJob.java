@@ -27,11 +27,9 @@ public class IndexCrawlJob implements Runnable {
     private ScheduledExecutorService scheduledExecutorService2;
     ConcurrentLinkedQueue<Stock> stockQueue = new ConcurrentLinkedQueue<>();
 
-    //scheduleAtFixedRate 也就是规定频率为1h，那么好，A任务开始执行，过来一个小时后，不管A是否执行完，都开启B任务
-    //scheduleWithFixedDealy却是需要在A任务执行完后，在经过1小时后再去执行B任务；
     public IndexCrawlJob() {
-        scheduledExecutorService = Executors.newScheduledThreadPool(12, new MyThreadFactory("crawlerJob-index"));
-        scheduledExecutorService2 = Executors.newScheduledThreadPool(5, new MyThreadFactory("outJob-index"));
+        scheduledExecutorService = Executors.newScheduledThreadPool(12, new MyThreadFactory("爬虫线程-index"));
+        scheduledExecutorService2 = Executors.newScheduledThreadPool(5, new MyThreadFactory("输出线程-index"));
     }
 
     public void stopTask() {
@@ -42,7 +40,7 @@ public class IndexCrawlJob implements Runnable {
 
     private void top() {
         ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) scheduledExecutorService;
-        log.info("总线程数{},活动线程数{},执行完成线程数{},排队线程数{},数据队列数{}",
+        log.info("总任务数{},活动线程数{},执行完成线程数{},排队线程数{},数据队列数{}",
                 threadPoolExecutor.getTaskCount(),
                 threadPoolExecutor.getActiveCount(),
                 threadPoolExecutor.getCompletedTaskCount(),
@@ -64,6 +62,9 @@ public class IndexCrawlJob implements Runnable {
             if (i > 0 && (i % 300 == 0 || i == sz_codes.size() - 1)) {
                 try {
                     SinaIndexSpider sinaIndexSpider = new SinaIndexSpider(list.toArray(new String[]{}), stockQueue);
+                    //scheduleAtFixedRate 也就是规定频率为1h，那么好，A任务开始执行，过来一个小时后，不管A是否执行完，都开启B任务
+                    //scheduleWithFixedDealy却是需要在A任务执行完后，在经过1小时后再去执行B任务；
+                    //爬虫线程池
                     scheduledExecutorService.scheduleWithFixedDelay(sinaIndexSpider, 0, 20, TimeUnit.SECONDS);
                     list = new ArrayList<>();
                 } catch (Exception ex) {

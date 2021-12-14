@@ -49,7 +49,7 @@ public abstract class AbstractHtmlSpider<T> implements Runnable, IHtmlSpider {
             WebPage webPage = crawlPage();
             parsePage(webPage);
         } catch (Exception ex) {
-            log.error("page process error {} {}", pageUrl, ex);
+            log.error("page process error {}", pageUrl, ex);
         }
     }
 

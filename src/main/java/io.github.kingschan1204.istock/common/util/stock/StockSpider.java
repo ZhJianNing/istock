@@ -29,7 +29,7 @@ public interface StockSpider {
 
 
     /**
-     * 将股票代码转换成新浪接口的格式http://hq.sinajs.cn/list=
+     * 将股票代码转换成新浪、雪球接口的格式http://hq.sinajs.cn/list=
      * sh 上海  sz 深圳
      *
      * @param code
@@ -43,9 +43,14 @@ public interface StockSpider {
         else if (code.matches("^60.*|68.*|^5.*")) {
             return String.format("sh%s", code);
         }
-        //1开头的，是深市基金 00开头是深圳
-        else if (code.matches("^1.*|^00.*|^300...")) {
+        //1开头是深市基金； 00开头是深圳； 301开头是深圳创业板，
+        // 【2021年5月28日第一只使用301开头的创业板股票上市，股票名称叫肇民科技301000】
+        else if (code.matches("^1.*|^00.*|^300...|^301...")) {
             return String.format("sz%s", code);
+        }
+        //适配北京所
+        else if (code.matches("^83.*|^87.*|^88.*|^430...")) {
+            return String.format("bj%s", code);
         }
         return null;
     }

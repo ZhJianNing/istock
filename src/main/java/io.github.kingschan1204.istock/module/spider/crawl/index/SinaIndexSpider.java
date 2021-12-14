@@ -69,6 +69,7 @@ public class SinaIndexSpider extends AbstractHtmlSpider<Stock> {
                 //波动
                 stock.setFluctuate(MathFormat.doubleFormat(nf.format(zf)));
             }
+//            log.info(StockSpider.formatStockCode(data[0]));
             stock.setCode(data[0]);
             stock.setType(StockSpider.formatStockCode(data[0]).replaceAll("\\d", ""));
             stock.setName(data[1].replaceAll("\\s", ""));

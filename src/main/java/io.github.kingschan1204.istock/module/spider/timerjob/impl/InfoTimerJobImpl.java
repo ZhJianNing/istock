@@ -27,19 +27,21 @@ public class InfoTimerJobImpl extends AbstractTimeJob {
                 if (null == infoCrawlJob) {
                     log.info("开启info更新线程!");
                     ThsInfoSpider infoSpider = new ThsInfoSpider();
-                    infoCrawlJob = new SimpleTimerJobContainer(infoSpider,0,1, TimeUnit.SECONDS,"ths-info",4);
-                    new Thread(infoCrawlJob, "InfoCrawlJob").start();
+                    infoCrawlJob = new SimpleTimerJobContainer(infoSpider,0,20, TimeUnit.MILLISECONDS,"股票详情",10);
+                    new Thread(infoCrawlJob, "股票详情").start();
                     status=STATUS.RUN;
                 }
                 break;
             case STOP:
                 if (null != infoCrawlJob) {
-                    log.info("关闭thsinfo更新线程!");
+                    log.info("关闭股票详情更新线程!");
                     infoCrawlJob.shutDown();
                     infoCrawlJob = null;
                     status=STATUS.STOP;
                 }
                 break;
+            default:
+                log.error("发现未知命令:{} " , command);
         }
     }
 }

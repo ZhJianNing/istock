@@ -17,31 +17,34 @@ import java.time.LocalDateTime;
 public class ScheduleThread implements Runnable {
 
 
+    //没分钟执行一次
     void jobProcess() throws Exception {
 
+        //股票时间工具
         TradingDateUtil tradingDateUtil = SpringContextUtil.getBean(TradingDateUtil.class);
         boolean tradeday=tradingDateUtil.isTradingDay();
         if(!tradeday){
-            log.info("not trade day . don't work ~ ");
+            log.info("不是交易日，不工作！！！");
             return;
         }
         LocalDateTime dateTime = LocalDateTime.now();
-        //
+        //如果是交易时间，开盘价格涨幅抓取任务
         if (tradingDateUtil.isTradingTimeNow()) {
             ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INDEX).execute(ITimerJob.COMMAND.START);
         } else {
+            //不是交易时间，关闭开盘期间股票价格抓取任务
             ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INDEX).execute(ITimerJob.COMMAND.STOP);
             if(dateTime.getHour()>=15){
                 //下午3点  闭市后爬取info信息
-                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INFO).execute(ITimerJob.COMMAND.START);
+//                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INFO).execute(ITimerJob.COMMAND.START);
                 //Dy
                 ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DY).execute(ITimerJob.COMMAND.START);
-                //top 10 holders
-                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.TOP_HOLDER).execute(ITimerJob.COMMAND.START);
-                //基金持股
-                if(ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY)== ITimerJob.STATUS.STOP){
-                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
-                }
+//                //top 10 holders
+//                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.TOP_HOLDER).execute(ITimerJob.COMMAND.START);
+//                //基金持股
+//                if(ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY)== ITimerJob.STATUS.STOP){
+//                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
+//                }
             }
         }
 

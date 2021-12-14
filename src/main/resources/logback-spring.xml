@@ -7,7 +7,7 @@
 <configuration scan="true" scanPeriod="60 seconds" debug="false">
     <!-- 动态日志级别 -->
     <jmxConfigurator/>
-    <!-- 定义日志文件 输出位置 -->
+    <!-- 定义日志文件 输出位置，window默认为项目所在盘符的根目录下，即D:/applogs/istock/ -->
     <property name="log_dir" value="/applogs/istock/"/>
     <!-- 日志最大的历史 30天 -->
     <property name="maxHistory" value="30"/>

@@ -31,8 +31,10 @@ public class XueQiuDyTimerJobImpl extends AbstractTimeJob {
                     log.info("开启dy更新线程!");
                     XueQiuQuoteSpider xueQiuQuoteSpider = new XueQiuQuoteSpider(error);
                     dyCrawlJob = new SimpleTimerJobContainer(
-                            xueQiuQuoteSpider,0,1, TimeUnit.SECONDS,"xueqiu-info",4);
-                    new Thread(dyCrawlJob, "DyCrawlJob").start();
+                            //雪球对访问频率有限制，100/s（频繁），20/s(频繁）,10/s(频繁）,5/s(频繁），1/s(
+                            //过于频繁后，ip被限制，需要在页面进行验证，重新解锁
+                            xueQiuQuoteSpider,0,500, TimeUnit.MILLISECONDS,"雪球dy更新任务",4);
+                    new Thread(dyCrawlJob, "雪球dy更新任务").start();
                     status=STATUS.RUN;
                 }
                 break;
@@ -44,6 +46,8 @@ public class XueQiuDyTimerJobImpl extends AbstractTimeJob {
                     status=STATUS.STOP;
                 }
                 break;
+            default:
+                log.error("发现未知命令:{} " , command);
         }
     }
 }

@@ -119,6 +119,9 @@ public class TushareApi {
 
     /**
      * 得到前10大持有人
+     * 2021-12-14 16:27:07.368 ERROR 38392 --- [      前十大股东-t-2] i.g.k.i.m.spider.openapi.TushareApi      : 解析返
+     * 回数据错误：datas={"msg":"抱歉，您每分钟最多访问该接口10次，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。",
+     * "code":40203,"request_id":"aa2dd4f65cb711ecb5febb700d8b92fc1639470444554397"}
      *
      * @param code
      * @return
@@ -131,7 +134,13 @@ public class TushareApi {
         json.put("fields", "ts_code,ann_date,end_date,holder_name,hold_amount,hold_ratio");
         String result = post(json);
         JSONObject datas = JSON.parseObject(result);
-        JSONArray items = datas.getJSONObject("data").getJSONArray("items");
+        JSONArray items = null;
+        try{
+            items = datas.getJSONObject("data").getJSONArray("items");
+        }catch (NullPointerException e){
+            log.error("解析返回数据错误：datas={}",datas);
+        }
+//        JSONArray items = datas.getJSONObject("data").getJSONArray("items");
         return items;
     }
 

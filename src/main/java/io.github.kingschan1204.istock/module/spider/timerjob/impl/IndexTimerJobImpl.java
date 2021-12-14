@@ -38,6 +38,8 @@ public class IndexTimerJobImpl extends AbstractTimeJob {
                     status=STATUS.STOP;
                 }
                 break;
+            default:
+                log.error("发现未知命令:{} " , command);
         }
     }
 }

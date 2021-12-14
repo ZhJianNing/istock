@@ -79,6 +79,10 @@ public class XueQiuQuoteSpider extends AbstractHtmlSpider<Stock> {
             return null;
         }
         String fcode = StockSpider.formatStockCode(currentCodeInfo.getCode());
+        if (null == fcode) {
+            log.error("{} 不能转换成sz或者sh有效代码！", currentCodeInfo.getCode());
+            return null;
+        }
         this.pageUrl = String.format("https://stock.xueqiu.com/v5/stock/quote.json?symbol=%s&extend=detail", fcode);
         this.cookie = new HashMap<>();
         this.cookie.put("xq_a_token", SpringContextUtil.getProperties("xueqiu.token"));

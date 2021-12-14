@@ -3,6 +3,7 @@ package io.github.kingschan1204.istock.module.spider.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.jsoup.nodes.Document;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.io.Serializable;
  **/
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Data
 public class WebPage implements Serializable {
     private Long jobDoneTime;

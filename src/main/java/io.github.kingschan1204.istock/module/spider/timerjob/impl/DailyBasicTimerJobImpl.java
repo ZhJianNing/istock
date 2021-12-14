@@ -28,8 +28,8 @@ public class DailyBasicTimerJobImpl extends AbstractTimeJob {
                 if (null == dailyBasicCrawlJob) {
                     log.info("开启basic daily更新线程!");
                     DailyBasicSpider dailyBasicSpider = new DailyBasicSpider();
-                    dailyBasicCrawlJob = new SimpleTimerJobContainer(dailyBasicSpider,0,3, TimeUnit.SECONDS,"dailyBasicSpider",4);
-                    new Thread(dailyBasicCrawlJob, "DailyBasicCrawlJob").start();
+                    dailyBasicCrawlJob = new SimpleTimerJobContainer(dailyBasicSpider,0,3, TimeUnit.SECONDS,"股票每日指标抓取任务",4);
+                    new Thread(dailyBasicCrawlJob, "股票每日指标抓取任务").start();
                     status=STATUS.RUN;
                 }
                 break;
@@ -41,6 +41,8 @@ public class DailyBasicTimerJobImpl extends AbstractTimeJob {
                     status=STATUS.STOP;
                 }
                 break;
+            default:
+                log.error("发现未知命令:{} " , command);
         }
     }
 }
