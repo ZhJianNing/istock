@@ -50,6 +50,7 @@ public class XueQiuQuoteSpider extends AbstractHtmlSpider<Stock> {
     private void getCodeInfo() {
         Integer dateNumber = Integer.valueOf(TradingDateUtil.getDateYYYYMMdd());
         Criteria cr = new Criteria();
+        //处理过的股票会存在dyDate这个字段
         Criteria c1 = Criteria.where("dyDate").lt(dateNumber);
         Criteria c2 = Criteria.where("dyDate").exists(false);
         Query query = new Query(cr.orOperator(c1, c2));
