@@ -60,7 +60,7 @@ public class XueQiuQuoteSpider extends AbstractHtmlSpider<Stock> {
             this.currentCodeInfo = list.get(0);
         } else {
             try {
-                log.info("stock dy 全部更新完毕，关闭更新线程！");
+                log.info("雪球dy全部更新完毕，关闭更新线程！");
                 ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DY).execute(ITimerJob.COMMAND.STOP);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -131,7 +131,7 @@ public class XueQiuQuoteSpider extends AbstractHtmlSpider<Stock> {
         UpdateResult updateResult2 = getMongoTemp().upsert(
                 new Query(Criteria.where("_id").is(currentCodeInfo.getCode())),
                 new Update().set("dyDate", Integer.valueOf(TradingDateUtil.getDateYYYYMMdd())), "stock_code_info");
-        log.info("XueQiu-dy更新，代码{}受影响行数:{} ", currentCodeInfo.getCode(), updateResult.getModifiedCount() + updateResult2.getModifiedCount());
+        log.info("雪球dy更新，代码{}受影响行数:{} ", currentCodeInfo.getCode(), updateResult.getModifiedCount() + updateResult2.getModifiedCount());
     }
 
 }

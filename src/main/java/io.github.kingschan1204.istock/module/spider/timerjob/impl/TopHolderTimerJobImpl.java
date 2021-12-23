@@ -28,7 +28,8 @@ public class TopHolderTimerJobImpl extends AbstractTimeJob {
                 if(null==topHoldersCrawlJob){
                     log.info("开始前十大股东抓取任务...");
                     TopHoldersSpider topHoldersSpider = new TopHoldersSpider();
-                    topHoldersCrawlJob=new SimpleTimerJobContainer(topHoldersSpider,0,4, TimeUnit.SECONDS,"前十大股东",4);
+                    //接口限制每分钟10次
+                    topHoldersCrawlJob=new SimpleTimerJobContainer(topHoldersSpider,0,7, TimeUnit.SECONDS,"前十大股东",4);
                     Thread thread = new Thread(topHoldersCrawlJob);
                     thread.start();
                     status=STATUS.RUN;

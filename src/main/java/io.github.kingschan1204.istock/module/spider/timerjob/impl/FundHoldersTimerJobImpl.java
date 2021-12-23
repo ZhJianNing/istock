@@ -32,16 +32,16 @@ public class FundHoldersTimerJobImpl extends AbstractTimeJob {
                         status=STATUS.ERROR;
                         return;
                     }
-                    log.info("开启FundHeld更新线程!");
+                    log.info("开启基金持仓任务更新线程!");
                     FundHolderSpider infoSpider = new FundHolderSpider(error);
-                    foundHeldCrawlJob = new SimpleTimerJobContainer(infoSpider,0,2, TimeUnit.SECONDS,"fund-held",4);
-                    new Thread(foundHeldCrawlJob, "FundHeldJob").start();
+                    foundHeldCrawlJob = new SimpleTimerJobContainer(infoSpider,0,2, TimeUnit.SECONDS,"基金持仓任务",4);
+                    new Thread(foundHeldCrawlJob, "基金持仓任务").start();
                     status=STATUS.RUN;
                 }
                 break;
             case STOP:
                 if (null != foundHeldCrawlJob) {
-                    log.info("关闭FundHeld更新线程!");
+                    log.info("关闭基金持仓任务更新线程!");
                     foundHeldCrawlJob.shutDown();
                     foundHeldCrawlJob = null;
                     status=STATUS.STOP;

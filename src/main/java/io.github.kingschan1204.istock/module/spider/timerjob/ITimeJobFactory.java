@@ -23,8 +23,8 @@ public class ITimeJobFactory {
         map.put(TIMEJOB.INDEX,new IndexTimerJobImpl());//开盘价格涨幅抓取任务---  【股票开盘期间，周期1分钟】【开启一个12核心定时线程池，每个线程20s请求一次】【雪球】【新浪】【深交所】
         map.put(TIMEJOB.INFO,new InfoTimerJobImpl());//股票详情数据抓取任务---            【下午三点后执行，周期每天】【单线程执行】【同花顺】
         map.put(TIMEJOB.TOP_HOLDER,new TopHolderTimerJobImpl());//前10大股东抓取任务---   【下午三点后执行，周期每天】【单线程执行】【Tushare，需要120积分】【您每分钟最多访问该接口10次】
-        map.put(TIMEJOB.DY,new XueQiuDyTimerJobImpl());//雪球dy更新任务---                【下午三点后执行，周期每天】
-        map.put(TIMEJOB.FUND_HOLDERS,new FundHoldersTimerJobImpl());//基金持仓任务        【下午三点后执行，周期每天；并且必须在DY任务之后执行】
+        map.put(TIMEJOB.DY,new XueQiuDyTimerJobImpl());//雪球dy更新任务---                【下午三点后执行，周期每天】【雪球】
+        map.put(TIMEJOB.FUND_HOLDERS,new FundHoldersTimerJobImpl());//基金持仓任务        【下午三点后执行，周期每天；并且必须在DY任务之后执行】【雪球】
         map.put(TIMEJOB.CLEAR,new ClearTimerJobImpl());//0点要执行的清理工作---                  【凌晨0时01分执行，周期每天】
         map.put(TIMEJOB.YEAR_REPORT,new YearReportTimerJobImpl());//年报财务数据抓取任务--       【凌晨0时01分执行，周期每天】
         map.put(TIMEJOB.STOCKCODE,new StockCodeTimerJobImpl());//A股所有代码更新任务---          【凌晨0时01分执行，周期每天】

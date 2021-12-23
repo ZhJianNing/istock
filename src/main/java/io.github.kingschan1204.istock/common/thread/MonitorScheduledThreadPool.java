@@ -49,6 +49,6 @@ public class MonitorScheduledThreadPool extends ScheduledThreadPoolExecutor {
     @Override
     protected void terminated() {
         super.terminated();
-        log.error("terminated...");
+        log.error("完成...");
     }
 }

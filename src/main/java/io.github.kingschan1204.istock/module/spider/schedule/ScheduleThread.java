@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDateTime;
 
 /**
- * 调度作业
+ * 调度作业时间
  *
  * @author chenguoxiang
  * @create 2019-03-26 17:00
@@ -42,9 +42,12 @@ public class ScheduleThread implements Runnable {
 //                //top 10 holders
                 ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.TOP_HOLDER).execute(ITimerJob.COMMAND.START);
 //                //基金持股
-                if(ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY)== ITimerJob.STATUS.STOP){
-                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
-                }
+                log.info("dy任务status：{}",ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY));
+                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
+                //todo 这里不能获取到dy状态为stop？，待研究
+//                if(ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY)== ITimerJob.STATUS.STOP){
+//                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
+//                }
             }
         }
 
