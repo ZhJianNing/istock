@@ -67,7 +67,7 @@ public class DailyBasicSpider implements Runnable {
         }
 //        TradingDateUtil tradingDateUtil = SpringContextUtil.getBean(TradingDateUtil.class);
         TushareApi tushareApi = SpringContextUtil.getBean(TushareApi.class);
-        log.info("daily basic ...{}", currentCodeInfo.getCode());
+        log.info("股票日常指标抓取 ...{}", currentCodeInfo.getCode());
         String startDate =currentCodeInfo.getList_date().toString();
                 //tradingDateUtil.minusDate(3, 0, 0, "yyyyMMdd");
         JSONArray data = tushareApi.getStockDailyBasic(

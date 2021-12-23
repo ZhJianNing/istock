@@ -71,6 +71,11 @@ public class SinaIndexSpider extends AbstractHtmlSpider<Stock> {
             }
 //            log.info(StockSpider.formatStockCode(data[0]));
             stock.setCode(data[0]);
+            String temp = StockSpider.formatStockCode(data[0]);
+            if(null == temp){
+                log.info(data[0]);
+            }
+            log.info(data[0]);
             stock.setType(StockSpider.formatStockCode(data[0]).replaceAll("\\d", ""));
             stock.setName(data[1].replaceAll("\\s", ""));
             stock.setPrice(xj);

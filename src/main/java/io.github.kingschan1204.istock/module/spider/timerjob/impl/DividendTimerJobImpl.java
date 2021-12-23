@@ -26,10 +26,10 @@ public class DividendTimerJobImpl extends AbstractTimeJob {
         switch (command){
             case START:
                 if (null == dividendCrawlJob) {
-                    log.info("开启dividendCrawlJob更新线程!");
+                    log.info("开启历史分红任务更新线程!");
                     DividendSpider dividendSpider = new DividendSpider();
-                    dividendCrawlJob = new SimpleTimerJobContainer(dividendSpider,0,6, TimeUnit.SECONDS,"dividend",4);
-                    new Thread(dividendCrawlJob, "dividendCrawlJob").start();
+                    dividendCrawlJob = new SimpleTimerJobContainer(dividendSpider,0,6, TimeUnit.SECONDS,"历史分红任务",4);
+                    new Thread(dividendCrawlJob, "历史分红任务").start();
                     status=STATUS.RUN;
                 }
                 break;

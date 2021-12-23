@@ -34,17 +34,17 @@ public class ScheduleThread implements Runnable {
         } else {
             //不是交易时间，关闭开盘期间股票价格抓取任务
             ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INDEX).execute(ITimerJob.COMMAND.STOP);
-            if(dateTime.getHour()>=15){
+            if(dateTime.getHour()>=15 && dateTime.getHour() <=20){
                 //下午3点  闭市后爬取info信息
-//                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INFO).execute(ITimerJob.COMMAND.START);
+                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INFO).execute(ITimerJob.COMMAND.START);
                 //Dy
                 ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DY).execute(ITimerJob.COMMAND.START);
 //                //top 10 holders
-//                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.TOP_HOLDER).execute(ITimerJob.COMMAND.START);
+                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.TOP_HOLDER).execute(ITimerJob.COMMAND.START);
 //                //基金持股
-//                if(ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY)== ITimerJob.STATUS.STOP){
-//                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
-//                }
+                if(ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY)== ITimerJob.STATUS.STOP){
+                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
+                }
             }
         }
 
@@ -62,7 +62,8 @@ public class ScheduleThread implements Runnable {
                 }
                 break;
             case 1:
-                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DAILY_BASIC).execute(ITimerJob.COMMAND.START);
+                //TuShare每日指标数据,需要600积分，暂时不执行
+//                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DAILY_BASIC).execute(ITimerJob.COMMAND.START);
                 ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DIVIDEND).execute(ITimerJob.COMMAND.START);
                 break;
             case 9:

@@ -29,7 +29,7 @@ public class IndexCrawlJob implements Runnable {
 
     public IndexCrawlJob() {
         scheduledExecutorService = Executors.newScheduledThreadPool(12, new MyThreadFactory("爬虫线程-index"));
-        scheduledExecutorService2 = Executors.newScheduledThreadPool(5, new MyThreadFactory("输出线程-index"));
+        scheduledExecutorService2 = Executors.newScheduledThreadPool(5, new MyThreadFactory("线程池监控线程-index"));
     }
 
     public void stopTask() {

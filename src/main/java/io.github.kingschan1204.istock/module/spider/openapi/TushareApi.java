@@ -25,9 +25,9 @@ import org.springframework.web.client.RestTemplate;
 public class TushareApi {
 
     @Value("${tushare.token}")
-    private String tuToken="66cdab7a757dcb728f8833f732a928791d67b6f38e1cd8d94bb79a0d";
+    private String tuToken = "66cdab7a757dcb728f8833f732a928791d67b6f38e1cd8d94bb79a0d";
     @Autowired
-    private RestTemplate restTemplate=new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
     final String api = "http://api.tushare.pro";
 
     /**
@@ -78,6 +78,7 @@ public class TushareApi {
         json.put("params", JSON.parse("{'list_status':'L'}"));
         json.put("fields", "ts_code,symbol,name,area,industry,fullname,market,list_status,list_date");
         String result = post(json);
+        log.info("获取代码列表：{}", result);
         JSONObject datas = JSON.parseObject(result);
         JSONArray items = datas.getJSONObject("data").getJSONArray("items");
         return items;
@@ -208,6 +209,16 @@ public class TushareApi {
         json.put("api_name", "daily_basic");
         json.put("params", params);
         String result = post(json);
+        log.info("股票日常指标抓任务【Tushare返回】{}",result);
+        //这里result返回：
+//        {
+//            "request_id": "c2e0716c5cf711ec9b11df5169a2431e1639497973780957",
+//                "code": 40203,
+//                "msg": "抱歉，您没有访问该接口的权限，权限的具体详情访问：https://tushare.pro/document/1?doc_id=108。",
+//                "data": null
+//        }
+        //每日指标数据	daily_basic	交易日每日15点～17点之间更新	600起
+        //需要600积分，暂时先不执行该任务
         JSONObject datas = JSON.parseObject(result);
         JSONArray items = datas.getJSONObject("data").getJSONArray("items");
         return items;
@@ -215,17 +226,18 @@ public class TushareApi {
 
     /**
      * https://tushare.pro/document/2?doc_id=128
+     *
      * @param date
      * @return
      */
-    public JSONArray index_dailybasic(String date){
+    public JSONArray index_dailybasic(String date) {
         JSONObject json = new JSONObject();
         JSONObject params = new JSONObject();
         params.put("trade_date", date);
         //接口名称
         json.put("api_name", "index_dailybasic");
         json.put("params", params);
-        json.put("fields","ts_code,trade_date,turnover_rate,turnover_rate_f,pe,pe_ttm,pb");
+        json.put("fields", "ts_code,trade_date,turnover_rate,turnover_rate_f,pe,pe_ttm,pb");
         String result = post(json);
         JSONObject datas = JSON.parseObject(result);
         JSONArray items = datas.getJSONObject("data").getJSONArray("items");
