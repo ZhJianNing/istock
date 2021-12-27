@@ -5,6 +5,7 @@ import io.github.kingschan1204.istock.module.spider.timerjob.ITimeJobFactory;
 import io.github.kingschan1204.istock.module.spider.timerjob.ITimerJob;
 import io.github.kingschan1204.istock.module.spider.util.TradingDateUtil;
 import lombok.extern.slf4j.Slf4j;
+
 import java.time.LocalDateTime;
 
 /**
@@ -22,8 +23,8 @@ public class ScheduleThread implements Runnable {
 
         //股票时间工具
         TradingDateUtil tradingDateUtil = SpringContextUtil.getBean(TradingDateUtil.class);
-        boolean tradeday=tradingDateUtil.isTradingDay();
-        if(!tradeday){
+        boolean tradeday = tradingDateUtil.isTradingDay();
+        if (!tradeday) {
             log.info("不是交易日，不工作！！！");
             return;
         }
@@ -34,55 +35,58 @@ public class ScheduleThread implements Runnable {
         } else {
             //不是交易时间，关闭开盘期间股票价格抓取任务
             ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INDEX).execute(ITimerJob.COMMAND.STOP);
-            if(dateTime.getHour()>=15 && dateTime.getHour() <=20){
-                //下午3点  闭市后爬取info信息
-                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INFO).execute(ITimerJob.COMMAND.START);
-                //Dy
-                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DY).execute(ITimerJob.COMMAND.START);
-//                //top 10 holders
-                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.TOP_HOLDER).execute(ITimerJob.COMMAND.START);
-//                //基金持股
-                log.info("dy任务status：{}",ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY));
-                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
-                //todo 这里不能获取到dy状态为stop？，待研究
-//                if(ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY)== ITimerJob.STATUS.STOP){
-//                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
-//                }
+
+            switch (dateTime.getHour()) {
+
+                //下午三点更新【基本信息】【dy信息】【前十大股东】
+                case 15:
+                    //info信息
+                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.INFO).execute(ITimerJob.COMMAND.START);
+                    //Dy
+                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DY).execute(ITimerJob.COMMAND.START);
+                    //top 10 holders
+                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.TOP_HOLDER).execute(ITimerJob.COMMAND.START);
+                    break;
+
+                //下午四点更新【基金持仓】
+                case 16:
+                    //基金持仓
+                    log.info("dy任务status：{}", ITimeJobFactory.getJobStatus(ITimeJobFactory.TIMEJOB.DY));
+                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.FUND_HOLDERS).execute(ITimerJob.COMMAND.START);
+
+
+                //晚上12点【清理任务】【更新所有代码list（已改为自选，可不执行）】【年报任务】
+                //case 0:
+                case 17:
+                    //清理
+                    //删除历史pb,pe,price,报表数据（应该会删除三个表stock_his_pe_pb、stock_report、stock_price_daily）,和data下载的文件
+//                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.CLEAR).execute(null);
+                    // 更新所有代码，这个定时不用执行了，以为已改为自选代码了
+//                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.STOCKCODE).execute(null);
+                    //年报
+                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.YEAR_REPORT).execute(ITimerJob.COMMAND.START);
+                    break;
+
+
+                //晚上1点更新【日常基本数据】【分红数据】
+                case 1:
+                    //TuShare每日指标数据,需要600积分，暂时不执行
+//                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DAILY_BASIC).execute(ITimerJob.COMMAND.START);
+                    //分红数据
+                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DIVIDEND).execute(ITimerJob.COMMAND.START);
+                    break;
+
+
+
+
+
+
+
+                default:
+                    break;
             }
         }
 
-
-        switch (dateTime.getHour()) {
-            case 0:
-                //晚上12点
-                if(dateTime.getMinute()==1){
-                    //清理
-                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.CLEAR).execute(null);
-                    // code company
-                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.STOCKCODE).execute(null);
-                    //year report
-                    ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.YEAR_REPORT).execute(ITimerJob.COMMAND.START);
-                }
-                break;
-            case 1:
-                //TuShare每日指标数据,需要600积分，暂时不执行
-//                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DAILY_BASIC).execute(ITimerJob.COMMAND.START);
-                ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.DIVIDEND).execute(ITimerJob.COMMAND.START);
-                break;
-            case 9:
-                //早上9点
-                break;
-            case 11:
-                //上午11点
-                break;
-            case 13:
-                //下午1点
-                break;
-            case 15:
-                break;
-            default:
-                break;
-        }
     }
 
     @Override

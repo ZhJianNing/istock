@@ -100,6 +100,7 @@ public class DividendSpider implements Runnable {
             Double percent = 0D;
             try {
                 dividends = combineHisDy(stock.getCode());
+                log.info("divends is : {}", dividends);
                 if (null != dividends && dividends.size() > 0) {
                     for (int j = 0; j < dividends.size(); j++) {
                         double tempPercent = dividends.getJSONObject(j).getDouble("percent");
@@ -117,7 +118,7 @@ public class DividendSpider implements Runnable {
                     affected = stockDividendList.size();
                 }
             } catch (Exception e) {
-                log.error("error:{}", e);
+                log.error("error:", e);
                 e.printStackTrace();
             }
             UpdateResult updateResult = getTemplate().upsert(

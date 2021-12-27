@@ -24,20 +24,20 @@ public class YearReportTimerJobImpl extends AbstractTimeJob {
             case START:
                 if (null == yearReportJob) {
                     if(error.get()>30){
-                        log.error("Year Report download 错误超过30次,不执行Dy任务！");
+                        log.error("年报任务 错误超过30次,停止执行！");
                         status=STATUS.ERROR;
                         return;
                     }
-                    log.info("开启Year Report更新线程!");
+                    log.info("开启年报任务线程!");
                     YearReportSpider yearReportSpider = new YearReportSpider(error);
-                    yearReportJob = new SimpleTimerJobContainer(yearReportSpider,0,1, TimeUnit.SECONDS,"YearReport",4);
-                    new Thread(yearReportJob, "yearReportJob").start();
+                    yearReportJob = new SimpleTimerJobContainer(yearReportSpider,0,5, TimeUnit.SECONDS,"年报任务",4);
+                    new Thread(yearReportJob, "年报任务").start();
                     status=STATUS.RUN;
                 }
                 break;
             case STOP:
                 if (null != yearReportJob) {
-                    log.info("关闭Year Report 更新线程!");
+                    log.info("关闭年报任务!");
                     yearReportJob.shutDown();
                     yearReportJob = null;
                     status=STATUS.STOP;

@@ -93,10 +93,11 @@ public class DefaultSpiderImpl implements StockSpider {
     public JSONArray getHistoryROE(String code) throws Exception {
         String url = String.format("http://basic.10jqka.com.cn/api/stock/export.php?export=main&type=year&code=%s", code);
         String path = String.format("./data/%s.xls", code);
-        String referrer=String.format("http://basic.10jqka.com.cn/%s/finance.html",code);
+//        String referrer=String.format("http://basic.10jqka.com.cn/%s/finance.html",code);
         if (!new File(path).exists()) {
             //下载
-            path= FileCommonOperactionTool.downloadFile(url, referrer,"./data/", code+".xls");
+            log.info("下载文件url：{}",url);
+            path= FileCommonOperactionTool.downloadFile3(url,"./data/", code+".xls");
         }else{
             log.info("文件存在，直接读取：{}",path);
         }

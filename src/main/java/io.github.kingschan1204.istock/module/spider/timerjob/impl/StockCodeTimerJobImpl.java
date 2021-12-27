@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class StockCodeTimerJobImpl extends AbstractTimeJob {
 
     public StockCodeTimerJobImpl(){
-        name="A股所有代码更新任务";
+        name="自选代码更新任务";
     }
 
     @Override

@@ -48,13 +48,14 @@ public class YearReportSpider implements Runnable {
         if (null == list || list.size() == 0) {
             return null;
         }
+        log.info("【年报任务】：需处理code数为{}",list.size());
         return list;
     }
 
    void doJob()throws Exception{
         List<StockCodeInfo> list = getCode();
         if (null == list) {
-            log.info("year report 处理完毕");
+            log.info("年报任务处理完毕");
             ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.YEAR_REPORT).execute(ITimerJob.COMMAND.STOP);
             return;
         }
@@ -92,7 +93,7 @@ public class YearReportSpider implements Runnable {
         try {
             doJob();
             if(error.get()>30){
-                log.error("错误超过30次，即将关闭YearReport任务");
+                log.error("错误超过30次，即将关闭年报任务任务");
                 ITimeJobFactory.getJob(ITimeJobFactory.TIMEJOB.YEAR_REPORT).execute(ITimerJob.COMMAND.STOP);
             }
         } catch (Exception e) {
